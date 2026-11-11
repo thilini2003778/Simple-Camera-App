@@ -80,7 +80,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CameraAppScreen() {
     val context = LocalContext.current
@@ -113,6 +112,35 @@ fun CameraAppScreen() {
         }
     }
 
+    CameraAppContent(
+        capturedBitmap = capturedBitmap,
+        onCaptureClick = {
+            val hasCameraPermission = ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.CAMERA
+            ) == PackageManager.PERMISSION_GRANTED
+
+            if (hasCameraPermission) {
+                cameraLauncher.launch(null)
+            } else {
+                permissionLauncher.launch(Manifest.permission.CAMERA)
+            }
+        },
+        onShareClick = {
+            capturedBitmap?.let { bitmap ->
+                sharePhoto(context, bitmap)
+            }
+        }
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CameraAppContent(
+    capturedBitmap: Bitmap?,
+    onCaptureClick: () -> Unit,
+    onShareClick: () -> Unit
+) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -154,10 +182,9 @@ fun CameraAppScreen() {
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    val currentBitmap = capturedBitmap
-                    if (currentBitmap != null) {
+                    if (capturedBitmap != null) {
                         Image(
-                            bitmap = currentBitmap.asImageBitmap(),
+                            bitmap = capturedBitmap.asImageBitmap(),
                             contentDescription = "Captured Photo",
                             modifier = Modifier
                                 .fillMaxSize()
@@ -204,18 +231,7 @@ fun CameraAppScreen() {
             ) {
                 // Button 1: Open Camera / Retake Photo
                 Button(
-                    onClick = {
-                        val hasCameraPermission = ContextCompat.checkSelfPermission(
-                            context,
-                            Manifest.permission.CAMERA
-                        ) == PackageManager.PERMISSION_GRANTED
-
-                        if (hasCameraPermission) {
-                            cameraLauncher.launch(null)
-                        } else {
-                            permissionLauncher.launch(Manifest.permission.CAMERA)
-                        }
-                    },
+                    onClick = onCaptureClick,
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(54.dp),
@@ -238,11 +254,7 @@ fun CameraAppScreen() {
 
                 // Button 2: Share Photo
                 Button(
-                    onClick = {
-                        capturedBitmap?.let { bitmap ->
-                            sharePhoto(context, bitmap)
-                        }
-                    },
+                    onClick = onShareClick,
                     enabled = capturedBitmap != null,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -318,7 +330,11 @@ private fun sharePhoto(context: Context, bitmap: Bitmap) {
 fun CameraAppScreenPreview() {
     SimpleCameraAppTheme {
         Surface(modifier = Modifier.fillMaxSize()) {
-            CameraAppScreen()
+            CameraAppContent(
+                capturedBitmap = null,
+                onCaptureClick = {},
+                onShareClick = {}
+            )
         }
     }
 }
