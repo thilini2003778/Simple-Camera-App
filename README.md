@@ -1,4 +1,4 @@
-﻿# Simple Camera Application
+﻿# Simple-Camera-App
 
 **Course:** Mobile Application Development – Assignment  
 **Student:** M. Thilini Kanchana  
