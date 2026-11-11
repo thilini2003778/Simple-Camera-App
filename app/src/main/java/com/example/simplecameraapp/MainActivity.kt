@@ -26,9 +26,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CameraAlt
-import androidx.compose.material.icons.filled.Share
+import androidx.compose.ui.res.painterResource
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -198,7 +196,7 @@ fun CameraAppContent(
                             modifier = Modifier.padding(24.dp)
                         ) {
                             Icon(
-                                imageVector = Icons.Default.CameraAlt,
+                                painter = painterResource(id = R.drawable.ic_camera),
                                 contentDescription = "Camera placeholder",
                                 modifier = Modifier.size(72.dp),
                                 tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
@@ -238,7 +236,7 @@ fun CameraAppContent(
                     shape = RoundedCornerShape(14.dp)
                 ) {
                     Icon(
-                        imageVector = Icons.Default.CameraAlt,
+                        painter = painterResource(id = R.drawable.ic_camera),
                         contentDescription = null,
                         modifier = Modifier.size(22.dp)
                     )
@@ -266,7 +264,7 @@ fun CameraAppContent(
                     )
                 ) {
                     Icon(
-                        imageVector = Icons.Default.Share,
+                        painter = painterResource(id = R.drawable.ic_share),
                         contentDescription = null,
                         modifier = Modifier.size(22.dp)
                     )
